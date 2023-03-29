@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load render_table from django_tables2 %}
+{% block content %}
+<div class="col-xl-10">
+    <div class="card">
+        <div class="card-body pt-3">
+            <form method="get">
+                {% csrf_token %}
+                {{ filter.form.status.label }}
+                {{ filter.form.status }}
+                {{ filter.form.solved_by.label }}
+                {{ filter.form.solved_by }}
+                {{ filter.form.city.label }}
+                {{ filter.form.city }}
+                <input type="submit" class="btn btn-primary"/>
+                {% if has_filter %}
+                <a class="btn btn-primary" href="{%  url 'complaint_app:complaint_list' %}">{% trans 'Clear all filters' %}</a>
+                {% endif %}
+            </form>
+            {% render_table table %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}

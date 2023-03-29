@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="col-xl-8">
+    <div class="card">
+        <div class="card-body p-3 m-3">
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <h4>Edit Documents</h4>
+                <div>
+                    {{ document_inline.management_form }}
+                    {% for q_form in document_inline %}
+                    <div id="document-formset">
+                        {% for fld in q_form.hidden_fields %}{{ fld }}{% endfor %}
+                        <div class="form-row align-items-end">
+                            <div class="form-group col-lg-12 mb-0">
+                                {{ q_form.file | as_crispy_field }}
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                    <br>
+                </div>
+                <input type="submit" class="btn btn-primary" value="Submit">
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

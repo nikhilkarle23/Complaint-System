@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="col-xl-8">
+    <div class="card">
+        <div class="card-header h1">Update Action</div>
+        <div class="card-body pt-3">
+            <form method="post">
+                {% csrf_token %}
+                {{ action_update_formset.management_form }}
+                {{ action_update_formset | crispy }}
+                <input type="submit" class="btn btn-primary" value="Update">
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

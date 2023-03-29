@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="col-xl-8">
+    <div class="card">
+        <div class="card-body pt-3">
+            <!-- Bordered Tabs -->
+            <ul class="nav nav-tabs nav-tabs-bordered">
+                <li class="nav-item">
+                    <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#profile-overview">Number of Users
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-edit">Work Status</button>
+                </li>
+            </ul>
+            <div class="tab-content pt-2">
+                <div class="tab-pane fade show active profile-overview" id="profile-overview">
+                    <!-- Bar Chart -->
+
+                    <div id="barChart"></div>
+                    <script>
+                    document.addEventListener("DOMContentLoaded", () => {
+                        new ApexCharts(document.querySelector("#barChart"), {
+                        series: [{
+                            data: [{{ Ahmedabad }}, {{ Mumbai }}, {{ Pune }}, {{ Dehli }}]
+                        }],
+                        chart: {
+                            type: 'bar',
+                            height: 200
+                        },
+                        plotOptions: {
+                            bar: {
+                                borderRadius: 4,
+                                horizontal: true,
+                            }
+                        },
+                        dataLabels: {
+                            enabled: false
+                        },
+                        xaxis: {
+                            categories: ['Ahmedabad', 'Mumbai', 'Pune', 'Dehli'],
+                        }
+                        }).render();
+                    });
+
+                    </script>
+                    <!-- End Bar Chart -->
+                </div>
+            </div>
+
+            <div class="tab-pane fade profile-edit pt-3" id="profile-edit">
+                <!-- Pie Chart -->
+              <canvas id="pieChart" style="max-height: 400px;"></canvas>
+              <script>
+                document.addEventListener("DOMContentLoaded", () => {
+                  new Chart(document.querySelector('#pieChart'), {
+                    type: 'pie',
+                    data: {
+                      labels: [
+                        'Pending',
+                        'Work in Progress',
+                        'Completed'
+                      ],
+                      datasets: [{
+                        label: 'Complaint Status',
+                        data: [ {{ myPendingData }},
+                                {{ myWorkInProgressData }},
+                                {{ myCompletedData }}],
+                        backgroundColor: [
+                          'rgb(255, 99, 132)',
+                          'rgb(255, 205, 86)',
+                          'rgb(54, 162, 235)',
+                        ],
+                        hoverOffset: 4
+                      }]
+                    }
+                  });
+                });
+              </script>
+              <!-- End Pie CHart -->
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

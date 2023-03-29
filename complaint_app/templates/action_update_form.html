@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="col-xl-8">
+    <div class="card">
+        <div class="card-body p-3 m-3">
+            <form method="post">
+                {% csrf_token %}
+                <div class="card-body">
+                    {{ action_update_formset.management_form }}
+                    {% for action_form in action_update_formset.forms %}
+                    <div id="action-formSet">
+                        {% for fld in action_form.hidden_fields %}{{ fld }}{% endfor %}
+                        <div class="form-row align-items-end">
+                            <div class="form-group col-lg-5 mb-0">
+                                {{ action_form.action | as_crispy_field }}
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                <div class="card-footer">
+                    <div class="card-footer-content text-right">
+                        <button type="submit" class="btn btn-success" value="Submit"><span
+                                class="oi oi-check"></span> Save
+                        </button>
+                        <a type="submit" class="btn btn-secondary" href="{{ request.META.HTTP_REFERER }}"><span
+                                class="oi oi-x"></span> Cancel
+                        </a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

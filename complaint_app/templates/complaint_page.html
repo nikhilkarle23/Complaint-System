@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% load formset_tags %}
+{% block content %}
+<div class="container">
+    <section class="section register min-vh-100 d-flex flex-column align-items-center justify-content-center">
+        <div class="container">
+            <div class="row ">
+                <div class="col-lg-8 col-md-12 d-flex flex-column align-items-center justify-content-center">
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <div class="pt-4 pb-2">
+                                <h5 class="card-title text-center pb-0 fs-4">Create Complaint</h5>
+                                <p class="text-center small">Enter your details to create complaint</p>
+                            </div>
+                            <!-- Complaint Form -->
+                            <form name="myForm" class="row g-3" onsubmit="return validateForm()" method="post"
+                                  enctype="multipart/form-data">
+                                {% csrf_token %}
+                                {{ form | crispy}}
+                                <hr>
+                                <h4>Add Actions</h4>
+                                <div>
+                                    {% with action_form_set.empty_form as q_form %}
+                                    <div id="formset-template" style="display: none;">
+                                        {% for fld in q_form.hidden_fields %}{{ fld }}{% endfor %}
+                                        <div class="form-row align-items-end">
+                                            <div class="form-group col-lg-5 mb-0">
+                                                {{ q_form.action | as_crispy_field }}
+                                            </div>
+                                            <div class="form-group col-lg-1 remove-button">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% endwith %}
+                                    {{ action_form_set.management_form | crispy }}
+                                    {% for q_form in action_form_set %}
+                                    <div id="qualifications-formset">
+                                        {% for fld in form.hidden_fields %}{{ fld }}{% endfor %}
+                                        <div class="form-row align-items-end">
+                                            <div class="form-group col-lg-5 mb-0">
+                                                {{ q_form.action | as_crispy_field }}
+                                            </div>
+                                            <div class="form-group col-lg-1 remove-button">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                    <div id="extras-section"></div>
+                                </div>
+                                <input type="submit" class="btn btn-primary" value="Submit">
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+{{ action_form_set.form.js }}
+<script>
+function validateForm() {
+  var x = document.forms["myForm"]["action_form_set-0-action"].value;
+  if (x == "") {
+    document.getElementById('id_action_form_set-0-action').style.borderColor = "red";
+    //alert("Action must be filled out");
+    return false;
+  }
+}
+
+
+
+</script>
+{% endblock %}
+{% block bottomscript %}
+<script>
+$(function () {
+    $('#qualifications-formset').formset({
+        formTemplate: $('#formset-template').clone(),
+        prefix: 'action_form_set',
+        addText: 'Add Another Action',
+        addCssClass: 'add-row btn btn-sm btn-primary mt-4 text-right',
+        addContainerClass: null,
+        deleteText: 'Remove',
+        deleteCssClass: 'delete-row btn btn-sm btn-secondary btn-block',
+        deleteContainerClass: 'remove-button',
+    })
+});
+
+</script>
+{% endblock %}

@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="col-xl-8">
+    <div class="card">
+        <div class="card-body pt-3">
+            <!-- Bordered Tabs -->
+            <ul class="nav nav-tabs nav-tabs-bordered">
+                <li class="nav-item">
+                    <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#profile-overview">Overview
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-edit">Edit Profile</button>
+                </li>
+            </ul>
+            <!-- Profile Details -->
+            <div class="tab-content pt-2">
+                <div class="tab-pane fade show active profile-overview" id="profile-overview">
+
+                    <!-- User Details -->
+                    <h5 class="card-title">User Details</h5>
+                    <div class="row p-2">
+                        <div class="col-lg-3 col-md-4 label ">Username</div>
+                        <div class="col-lg-9 col-md-8">{{ object.get_username }}</div>
+                    </div>
+                    <div class="row p-2">
+                        <div class="col-lg-3 col-md-4 label ">Full Name</div>
+                        <div class="col-lg-9 col-md-8">{{ object.get_full_name }}</div>
+                    </div>
+                    <div class="row p-2">
+                        <div class="col-lg-3 col-md-4 label">Email</div>
+                        <div class="col-lg-9 col-md-8">{{ object.email }}</div>
+                    </div>
+                    <div class="row p-2">
+                        <div class="col-lg-3 col-md-4 label">Join Date</div>
+                        <div class="col-lg-9 col-md-8">{{ object.date_joined|date:"d/m/y" }}</div>
+                    </div>
+                    <div class="row p-2">
+                        <div class="col-lg-3 col-md-4 label">User</div>
+                        <div class="col-lg-9 col-md-8">{{ object.userprofilemodel.get_user_type_display }}</div>
+                    </div>
+
+                    <!-- Personal Details -->
+                    <h5 class="card-title">Personal Details</h5>
+                    <div class="row p-2">
+                        <div class="col-lg-3 col-md-4 label">Contact Number</div>
+                        <div class="col-lg-9 col-md-8">{{ object.userprofilemodel.phone_number }}</div>
+                    </div>
+                    <div class="row p-2">
+                        <div class="col-lg-3 col-md-4 label ">Address</div>
+                        <div class="col-lg-9 col-md-8">{{ object.userprofilemodel.address1 }} {{ object.userprofilemodel.address2 }}
+                        </div>
+                    </div>
+                    <div class="row p-2">
+                        <div class="col-lg-3 col-md-4 label ">Pin Code</div>
+                        <div class="col-lg-9 col-md-8">{{ object.userprofilemodel.pin_code }}</div>
+                    </div>
+                    <div class="row p-2">
+                        <div class="col-lg-3 col-md-4 label ">City</div>
+                        <div class="col-lg-9 col-md-8">{{ object.userprofilemodel.city }}</div>
+                    </div>
+                </div>
+
+                <div class="tab-pane fade profile-edit pt-3" id="profile-edit">
+
+                    <!-- Edit Form -->
+                    <form class="row g-3" method="post">
+                        {% csrf_token %}
+                        {{ form.username | as_crispy_field }}
+                        <div class="row">
+                            <div class="col">{{ form.first_name | as_crispy_field }}</div>
+                            <div class="col">{{ form.last_name | as_crispy_field }}</div>
+                        </div>
+                        {{ form.email | as_crispy_field }}
+                        {{ user_profile_form.phone_number | as_crispy_field }}
+                        {{ user_profile_form.address1 | as_crispy_field }}
+                        {{ user_profile_form.address2 | as_crispy_field }}
+                        {{ user_profile_form.pin_code | as_crispy_field }}
+                        {{ user_profile_form.city | as_crispy_field }}
+                        <div class="col-12">
+                            <button class="btn btn-primary w-100" type="submit">Update Details</button>
+                        </div>
+                    </form>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
